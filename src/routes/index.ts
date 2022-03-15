@@ -33,11 +33,18 @@ routes.post('/create',(req,res) => {
 //Delete a Task
 routes.post('/delete',(req,res) => {
   res.header("Access-Control-Allow-Origin", "*");
+  const query = { id: req.body.id };
+  Tasks.findOneAndUpdate(query, { $set: { isComplete: true }});
 })
 
 //Modify a Task
 routes.post('/modify'),(req,res) => {
   res.header("Access-Control-Allow-Origin", "*");
+  const query = { id: req.body.id };
+  Tasks.findOneAndUpdate(query, { $set: { 
+    description: req.body.description,
+    deadline: req.body.deadline
+   }});
 }
 
 

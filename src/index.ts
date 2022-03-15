@@ -14,13 +14,15 @@ app.use('/api',routes);
 
 const uri = process.env.MONGO_URI
 
+
+//Connecting to Database
 mongoose.connect(uri)
     .then((result)=>{console.log("database connected")})
     .catch( err => { console.error(err.message)});
 app.use('/api',routes)
 
 app.get('/',(req,res)=>{
-  console.log('Express sent')
+  console.log('Server listened')
   res.send('Server created');
 })
 

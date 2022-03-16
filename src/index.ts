@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import routes from './routes';
 import mongoose from 'mongoose';
 import dotevnv from 'dotenv'
@@ -21,7 +21,7 @@ mongoose.connect(uri)
     .catch( err => { console.error(err.message)});
 app.use('/api',routes)
 
-app.get('/',(req,res)=>{
+app.get('/',(req : Request,res : Response, next: NextFunction)=>{
   console.log('Server listened')
   res.send('Server created');
 })

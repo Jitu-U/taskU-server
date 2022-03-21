@@ -1,9 +1,9 @@
 const express = require('express')
-const controller  = require('../controllers/taskController')
+const controller = require('../controllers/taskController')
 
 const routes = express.Router();
 
-routes.get('/', (req, res,next) => {
+routes.get('/', (req, res, next) => {
   res.send('Welcome to TaskU server');
 });
 
@@ -18,10 +18,10 @@ routes.post('/create', controller.addTask)
 routes.post('/complete/:id', controller.completeTask)
 
 //Modify a Task
-routes.post('/modify/:id',controller.modifyTask)
+routes.post('/modify/:id', controller.modifyTask)
 
 //Delete a Task
-routes.post('/delete/:id',controller.deleteTask )
+routes.post('/delete/:id', controller.deleteTask)
 
 
 module.exports = routes;

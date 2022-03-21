@@ -5,7 +5,9 @@ function getTasks(req, res, next) {
 
   Tasks.find().then(result => res.send(result))
     .catch(err => {
-      res.status(404).send({ error: 'Unable get tasks' });
+      res.status(404).send({
+        error: 'Unable get tasks'
+      });
       console.log(`Cannot get tasks `, err);
     });
 }
@@ -22,7 +24,9 @@ async function addTask(req, res, next) {
     t.isComplete = false;
     //Pushing to Database
     await t.save()
-      .then(data => res.send({ data: data }))
+      .then(data => res.send({
+        data: data
+      }))
       .catch(err => console.log('ERROR', err));
   } else {
     res.error('Cannot create value')
@@ -32,51 +36,71 @@ async function addTask(req, res, next) {
 
 
 async function completeTask(req, res, next) {
-  const query = { id: parseInt(req.params.id) };
-  
-  await  Tasks
-      .findOneAndUpdate(query, { $set: { isComplete: true } }, { new: true })
-      .then((err, doc) => {
-        if (err) {
-          console.log(err);
-        }
-        res.send({msg: 'Completed the Task'});
-        console.log(doc);
-      })
-      .catch(err => {
-        console.log('ERROR', err);
-        res.send({ error : err});
-      });
-}
+  const query = {
+    id: parseInt(req.params.id)
+  };
 
-  
-async function modifyTask(req, res, next) {
-  const query = { id: req.params.id };
-
-    await Tasks.findOneAndUpdate(query,
-      {
-        $set: {
-          description: req.body.description,
-          deadline: req.body.deadline
-        }
-      },
-      { new: true }
-    ).then((err, doc) => {
+  await Tasks
+    .findOneAndUpdate(query, {
+      $set: {
+        isComplete: true
+      }
+    }, {
+      new: true
+    })
+    .then((err, doc) => {
       if (err) {
         console.log(err);
       }
-      res.send({msg: 'Edited the Task'});
+      res.send({
+        msg: 'Completed the Task'
+      });
       console.log(doc);
     })
-  .catch( err  => {
-    res.status(404).send({ error: 'Unable to modify' });
-    console.log(err);
-  });
+    .catch(err => {
+      console.log('ERROR', err);
+      res.send({
+        error: err
+      });
+    });
 }
 
 
-  async function deleteTask(req, res, next) {
-  const query = { id: parseInt(req.params.id) };
+async function modifyTask(req, res, next) {
+  console.log(req.body)
+  const query = {
+    id: req.params.id
+  };
+
+  await Tasks.findOneAndUpdate(query, {
+    $set: {
+      description: req.body.description,
+      deadline: req.body.deadline
+    }
+  }, {
+    new: true
+  }).then((err, doc) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send({
+      msg: 'Edited the Task'
+    });
+    console.log(doc);
+  })
+    .catch(err => {
+      res.status(404).send({
+        error: 'Unable to modify'
+      });
+      console.log(err);
+    });
+}
+
+
+async function deleteTask(req, res, next) {
+  const query = {
+    id: parseInt(req.params.id)
+  };
   try {
     Tasks
       .findOneAndDelete(query, (err) => {
@@ -86,14 +110,16 @@ async function modifyTask(req, res, next) {
         }
       });
   } catch (err) {
-    res.status(404).send({ error: 'Unable to Complete' });
+    res.status(404).send({
+      error: 'Unable to Complete'
+    });
   }
 }
 
 
-  
-  exports.getTasks = getTasks;
-  exports.addTask = addTask;
-  exports.completeTask = completeTask;
-  exports.modifyTask = modifyTask;
-  exports.deleteTask =deleteTask;
+
+exports.getTasks = getTasks;
+exports.addTask = addTask;
+exports.completeTask = completeTask;
+exports.modifyTask = modifyTask;
+exports.deleteTask = deleteTask;

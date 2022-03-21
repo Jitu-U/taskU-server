@@ -10,8 +10,9 @@ function getTasks(req, res, next) {
     });
 }
 
-async function addTask(req, res, next) {
 
+// Function for adding task to Database 
+async function addTask(req, res, next) {
   if (req.body !== undefined) {
     console.log(req.body);
     const t = new Tasks();
@@ -24,6 +25,7 @@ async function addTask(req, res, next) {
       .then(data => res.send({ data: data }))
       .catch(err => console.log('ERROR', err));
   } else {
+    res.error('Cannot create value')
     console.log("undefined value");
   }
 }
@@ -31,36 +33,45 @@ async function addTask(req, res, next) {
 
 async function completeTask(req, res, next) {
   const query = { id: parseInt(req.params.id) };
-  try {
-    Tasks
-      .findOneAndUpdate(query, { $set: { isComplete: true } }, { new: true }, (err, doc) => {
+  
+  await  Tasks
+      .findOneAndUpdate(query, { $set: { isComplete: true } }, { new: true })
+      .then((err, doc) => {
         if (err) {
           console.log(err);
         }
-        res.send('Completed the Task');
+        res.send({msg: 'Completed the Task'});
         console.log(doc);
+      })
+      .catch(err => {
+        console.log('ERROR', err);
+        res.send({ error : err});
       });
-  } catch (err) {
-    res.status(404).send({ error: 'Unable to Complete' });
-  }
 }
 
   
 async function modifyTask(req, res, next) {
   const query = { id: req.params.id };
 
-  try {
     await Tasks.findOneAndUpdate(query,
       {
         $set: {
           description: req.body.description,
           deadline: req.body.deadline
         }
+      },
+      { new: true }
+    ).then((err, doc) => {
+      if (err) {
+        console.log(err);
       }
-    ).then(res.send('Successfully Edited'));
-  } catch (err) {
+      res.send({msg: 'Edited the Task'});
+      console.log(doc);
+    })
+  .catch( err  => {
     res.status(404).send({ error: 'Unable to modify' });
-  }
+    console.log(err);
+  });
 }
 
 

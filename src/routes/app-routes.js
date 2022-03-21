@@ -1,10 +1,10 @@
 const express = require('express')
-const controller  = require('../controllers/controller')
+const controller  = require('../controllers/taskController')
 
 const routes = express.Router();
 
 routes.get('/', (req, res,next) => {
-  res.send('Hello World!');
+  res.send('Welcome to TaskU server');
 });
 
 //For initial getting all tasks

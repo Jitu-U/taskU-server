@@ -1,27 +1,27 @@
 const express = require('express')
 const controller = require('../controllers/taskController')
 
-const routes = express.Router();
+const router = express.Router();
 
-routes.get('/', (req, res, next) => {
-  res.send('Welcome to TaskU server');
+router.get('/', (req, res, next) => {
+  res.send({'API endpoints' : ['1.GET: /tasks : to get all tasks ','2.POST: /create : to create task ','3.POST: /complete/:id : to change status of Task to complete','4.POST: /modify/:id : to Modify the task', '5.POST: /delete/:id : to delete the task']});
 });
 
 //For initial getting all tasks
-routes.get('/tasks', controller.getTasks);
+router.get('/tasks', controller.getTasks);
 
 
 // For creating new Taskrs
-routes.post('/create', controller.addTask)
+router.post('/create', controller.addTask)
 
 //Complete a Task
-routes.post('/complete/:id', controller.completeTask)
+router.post('/complete/:id', controller.completeTask)
 
 //Modify a Task
-routes.post('/modify/:id', controller.modifyTask)
+router.post('/modify/:id', controller.modifyTask)
 
 //Delete a Task
-routes.post('/delete/:id', controller.deleteTask)
+router.post('/delete/:id', controller.deleteTask)
 
 
-module.exports = routes;
+module.exports = router;
